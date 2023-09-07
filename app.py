@@ -5,6 +5,21 @@ import streamlit as st
 import requests
 
 st.markdown("<h1 style='text-align:center;'> Image Web Scraper</h1>", unsafe_allow_html=True)
+style="""<style>
+a:link, a:visited {
+  background-color: #f44336;
+  color: black;
+  padding: 5px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: red;
+}
+</style>"""
+st.markdown(style,unsafe_allow_html=True)
 
 with st.form("Search"):
     keyword=st.text_input("Enter image keyword you want to search")
@@ -15,20 +30,26 @@ placeholder=st.empty()
 
 if keyword:
     page=requests.get(f"https://unsplash.com/s/photos/{keyword}")
-    soup=BeautifulSoup(page.content,"html.parser")
+    soup=BeautifulSoup(page.content,'html.parser')
     rows=soup.find_all("div",class_="MorZF")
     
     col1,col2=placeholder.columns(2)
+    
     for index,row in enumerate(rows):
-         img=row.find("img")
-         imgsrc=img["src"]
-         print(imgsrc)
-         if index%2==0:
+        img=row.find("img")
+        #link=row["href"]
+        imgsrc=img["src"]
+         
+        if index%2==0:
             col1.image(imgsrc)
-             btn=col1.button("Download", key=str(index))
-         else:
+            #btn=col1.button("Download", key=str(index))
+            html=f"""<a class='downld' style='' download target='_blank' href='{imgsrc}'>Download</a>"""
+            col1.markdown(html, unsafe_allow_html=True)
+        else:
             col2.image(imgsrc)
-            btn=col1.button("Download", key=str(index))
+            #btn=col2.button("Download", key=str(index))
+            html=f"""<a class='downld' style='' download target='_blank' href='{imgsrc}'>Download</a>"""
+            col2.markdown(html, unsafe_allow_html=True)
          
         
         
