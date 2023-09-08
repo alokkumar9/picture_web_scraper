@@ -61,7 +61,6 @@ if keyword:
             #btn=col2.button("Download", key=str(index))
             col2.markdown(html, unsafe_allow_html=True)
             col2.markdown("---",unsafe_allow_html=True)
-
          
         
         
